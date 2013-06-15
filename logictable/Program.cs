@@ -20,6 +20,8 @@
 // <date>15/06/2013</date>
 //-----------------------------------------------------------------------
 using System;
+using System.IO;
+using System.Text;
 
 namespace logictable
 {
@@ -27,79 +29,37 @@ namespace logictable
 	{
 		public static void Main (string[] args)
 		{
-			string table = @"0000
-0010
-----
-0100
-0000
-0001
-0001
-0001
-0111
-0011
-0001
-----
-0000
-0011
-----
-----
-0010
-0110
-0110
-0110
-0111
-1111
-----
-0110
-0101
-0001
-----
-1101
-0101
-----
-0110
-0100
-1100
-1000
-1000
-1100
-1100
-----
-1001
-1101
-1110
-1111
-1011
-----
-1110
-1110
-1010
-1010
-0010
-1011
-1010
-1010
-----
-1001
-1001
-----
-----
-0001
-0001
-0001
-0000
-1000
-1000
-1001
-";
-			LogicTable lt = LogicTable.FromText(table, 2, 4);
-			if (lt[14, 2][2] != BitValue.Zero)
-				throw new Exception();
+			if (args.Length != 5 || args[0] != "-eam")
+				return;
 
-			int[] ones     = lt.GetMintermsOf(0, BitValue.One);
-			int[] dontcare = lt.GetMintermsOf(0, BitValue.DontCare);
+			string tablePath  = args[1];
+			int numVarsColumn = Convert.ToInt32(args[2]);
+			int numVarsRow    = Convert.ToInt32(args[3]);
+			string outputPath = args[4];
 
-			Console.WriteLine("Done!");
+			// Export All Minterms
+			LogicTable lt = LogicTable.FromText(File.ReadAllText(tablePath), numVarsColumn, numVarsRow);
+
+			StringBuilder output = new StringBuilder();
+			int[] min;
+			for (int i = 0; i < lt.NumBits; i++) {
+				output.AppendFormat("Y{0}\n", i);
+
+				min = lt.GetMintermsOf(i, BitValue.One);
+				output.Append("1: ");
+				for (int k = 0; k < min.Length; k++)
+					output.AppendFormat("{0},", min[k]);
+				output.AppendLine();
+
+				min = lt.GetMintermsOf(i, BitValue.DontCare);
+				output.Append("-: ");
+				for (int k = 0; k < min.Length; k++)
+					output.AppendFormat("{0},", min[k]);
+				output.AppendLine();
+			}
+
+			File.WriteAllText(outputPath, output.ToString());
+
 		}
 	}
 }

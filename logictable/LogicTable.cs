@@ -35,7 +35,7 @@ namespace logictable
 
 		public static LogicTable FromText(string txtTable, int numVarsX, int numVarsY)
 		{
-			string[] entries = txtTable.Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
+			string[] entries = txtTable.Split(new char[] {'\n','\r'}, StringSplitOptions.RemoveEmptyEntries);
 			int numEntries   = entries.Length;
 			int numBits      = entries[0].Length;
 
