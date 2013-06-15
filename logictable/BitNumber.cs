@@ -40,7 +40,7 @@ namespace logictable
 		}
 
 		public BitValue this[int i] {
-			get { return this.bits[i]; }
+			get { return this.bits[(this.NumBits - 1) - i]; }
 		}
 
 		public int NumBits {

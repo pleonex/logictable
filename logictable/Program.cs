@@ -42,7 +42,7 @@ namespace logictable
 0000
 0011
 ----
-0101
+----
 0010
 0110
 0110
@@ -96,7 +96,10 @@ namespace logictable
 			if (lt[14, 2][2] != BitValue.Zero)
 				throw new Exception();
 
+			int[] ones     = lt.GetMintermsOf(0, BitValue.One);
+			int[] dontcare = lt.GetMintermsOf(0, BitValue.DontCare);
 
+			Console.WriteLine("Done!");
 		}
 	}
 }
