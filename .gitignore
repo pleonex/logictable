@@ -1,0 +1,8 @@
+# Ignore IDE conf files
+logictable.userprefs
+logictable.suo
+logictable/logictable.csproj.user
+
+# Ignore build files
+logictable/bin/
+logictable/obj/
